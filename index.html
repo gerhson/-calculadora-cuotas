@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -50,11 +51,24 @@
     h2, h3 {
       text-align: center;
     }
+    .whatsapp {
+      margin-top: 15px;
+      background-color: #25D366;
+    }
   </style>
 </head>
 <body>
 
 <h2>Calculadora de Crédito Hipotecario</h2>
+
+<label>Nombre completo:</label>
+<input type="text" id="nombre" placeholder="Ej: Juan Pérez">
+
+<label>Correo electrónico:</label>
+<input type="email" id="correo" placeholder="Ej: juan@email.com">
+
+<label>Celular:</label>
+<input type="tel" id="celular" placeholder="Ej: 993681392">
 
 <label>Valor de la casa (USD):</label>
 <input type="number" id="valorCasa" placeholder="Ej: 120000">
@@ -69,6 +83,11 @@
 <input type="number" id="cuotaInicial" placeholder="Ej: 20000">
 
 <button onclick="calcularCredito()">Calcular</button>
+
+<!-- Botón de WhatsApp con mensaje personalizado -->
+<button class="whatsapp" onclick="enviarWhatsApp()" style="color:white; border:none; font-size:16px; cursor:pointer;">
+  💬 Enviar por WhatsApp
+</button>
 
 <div id="resultado"></div>
 
@@ -128,18 +147,34 @@ function calcularCredito() {
   html += `</tbody></table>`;
   document.getElementById("resultado").innerHTML = html;
 }
+
+function enviarWhatsApp() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const correo = document.getElementById('correo').value.trim();
+  const celular = document.getElementById('celular').value.trim();
+  const valorCasa = document.getElementById('valorCasa').value.trim();
+  const tasa = document.getElementById('tasaInteres').value.trim();
+  const tiempo = document.getElementById('tiempoMeses').value.trim();
+  const inicial = document.getElementById('cuotaInicial').value.trim();
+
+  if (!nombre || !correo || !celular || !valorCasa || !tasa || !tiempo || !inicial) {
+    alert("Por favor, completa todos los campos antes de enviar.");
+    return;
+  }
+
+  const mensaje = `Hola, quiero información sobre un crédito hipotecario:
+👤 Nombre: ${nombre}
+📧 Correo: ${correo}
+📱 Celular: ${celular}
+🏠 Valor casa: $${valorCasa}
+💵 Cuota inicial: $${inicial}
+📅 Tiempo: ${tiempo} meses
+📈 Tasa de interés: ${tasa}%`;
+
+  const url = `https://wa.me/51993681392?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, "_blank");
+}
 </script>
 
 </body>
 </html>
-
-
-  
-
-
- 
-     
-      
-
-     
-    
