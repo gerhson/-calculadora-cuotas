@@ -1,2 +1,16 @@
-# -calculadora-cuotas
-Calculadora de cuotas para inmuebles con interés y plazo personalizado.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Cuotas</title>
+</head>
+<body>
+  <h1>Calculadora de Cuotas</h1>
+  <p>¡Hola! Esta es una calculadora simple.</p>
+
+  <!-- Botón de WhatsApp -->
+  <a href="https://wa.me/5491234567890" target="_blank">
+    <button>Escribime por WhatsApp</button>
+  </a>
+</body>
+</html>
