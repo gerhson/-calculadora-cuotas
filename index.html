@@ -1,161 +1,103 @@
-
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora Hipotecaria</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 700px;
-      margin: 30px auto;
-      padding: 20px;
-    }
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
-    input {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      background-color: #25D366;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #1ebe5f;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      font-size: 14px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 6px;
-      text-align: right;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    h2, h3 {
-      text-align: center;
-    }
-  </style>
+  <title>Mi calculadora</title>
 </head>
 <body>
+  <h1>¡Hola mundo!</h1>
+  <p>Mi sitio desde GitHub Pages funciona.</p>
 
-<h2>Calculadora de Crédito Hipotecario</h2>
-
-<label>Nombre completo:</label>
-<input type="text" id="nombre" placeholder="Ej: Juan Pérez">
-
-<label>Correo electrónico:</label>
-<input type="email" id="correo" placeholder="Ej: juan@email.com">
-
-<label>Celular:</label>
-<input type="tel" id="celular" placeholder="Ej: 993681392">
-
-<label>Valor de la casa (USD):</label>
-<input type="number" id="valorCasa" placeholder="Ej: 120000">
-
-<label>Tasa de interés referencial anual (%):</label>
-<input type="number" id="tasaInteres" placeholder="Ej: 5">
-
-<label>Tiempo (en meses):</label>
-<input type="number" id="tiempoMeses" placeholder="Ej: 240">
-
-<label>Cuota inicial (USD):</label>
-<input type="number" id="cuotaInicial" placeholder="Ej: 20000">
-
-<!-- Botón único para calcular y enviar a WhatsApp -->
-<button onclick="calcularYEnviar()">Calcular y Enviar por WhatsApp</button>
-
-<div id="resultado"></div>
-
-<script>
-function calcularYEnviar() {
-  const nombre = document.getElementById('nombre').value.trim();
-  const correo = document.getElementById('correo').value.trim();
-  const celular = document.getElementById('celular').value.trim();
-  const valorCasa = parseFloat(document.getElementById('valorCasa').value);
-  const tasaAnual = parseFloat(document.getElementById('tasaInteres').value);
-  const tiempoMeses = parseInt(document.getElementById('tiempoMeses').value);
-  const cuotaInicial = parseFloat(document.getElementById('cuotaInicial').value);
-
-  if (!nombre || !correo || !celular || isNaN(valorCasa) || isNaN(tasaAnual) || isNaN(tiempoMeses) || isNaN(cuotaInicial)) {
-    alert("Por favor, completa todos los campos correctamente.");
-    return;
-  }
-
-  const montoPrestamo = valorCasa - cuotaInicial;
-  const tasaMensual = tasaAnual / 12 / 100;
-  const cuotaMensual = montoPrestamo * tasaMensual / (1 - Math.pow(1 + tasaMensual, -tiempoMeses));
-
-  let html = `
-    <h3>Resumen del crédito</h3>
-    <p><b>Monto financiado:</b> $${montoPrestamo.toFixed(2)}</p>
-    <p><b>Cuota mensual aproximada:</b> $${cuotaMensual.toFixed(2)}</p>
-
-    <h3>Cuadro de cuotas</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Mes</th>
-          <th>Cuota</th>
-          <th>Interés</th>
-          <th>Capital</th>
-          <th>Saldo</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  let saldo = montoPrestamo;
-  for (let i = 1; i <= tiempoMeses; i++) {
-    const interes = saldo * tasaMensual;
-    const capital = cuotaMensual - interes;
-    saldo -= capital;
-
-    html += `
-      <tr>
-        <td>${i}</td>
-        <td>$${cuotaMensual.toFixed(2)}</td>
-        <td>$${interes.toFixed(2)}</td>
-        <td>$${capital.toFixed(2)}</td>
-        <td>$${saldo > 0 ? saldo.toFixed(2) : '0.00'}</td>
-      </tr>
-    `;
-  }
-
-  html += `</tbody></table>`;
-  document.getElementById("resultado").innerHTML = html;
-
-  // Enviar por WhatsApp después de calcular
-  const mensaje = `Hola, quiero información sobre un crédito hipotecario:
-👤 Nombre: ${nombre}
-📧 Correo: ${correo}
-📱 Celular: ${celular}
-🏠 Valor casa: $${valorCasa}
-💵 Cuota inicial: $${cuotaInicial}
-📅 Tiempo: ${tiempoMeses} meses
-📈 Tasa de interés: ${tasaAnual}%
-📊 Cuota mensual estimada: $${cuotaMensual.toFixed(2)}`;
-
-  const url = `https://wa.me/51993681392?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-}
-</script>
-
+  <!-- Botón de WhatsApp -->
+  <a href="https://wa.me/51993681392" target="_blank">
+    <button>Escribime por WhatsApp</button>
+  </a>
 </body>
 </html>
+
+
+<div id="calculadora-cuotas">
+        <form class="form-promociones shadow-sm rounded-3 border p-4 justify-content-end align-items-center gy-3 position-relative  listing-calculadora-style ">
+   
+        <div class="">
+            <label class="form-label fw-semibold">Valor del inmueble</label>
+            <input id="itemvalue" value="640000" type="text" class="form-control babilonia-input validate" placeholder="S/ 0.00" inputmode="decimal" data-type="convert" data-price-pen="2328320" data-price-usd="640000" data-calculator="true" data-prefix="currency">
+        </div>
+        <div class="">
+            <label class="form-label fw-semibold">
+                Cuota inicial 
+                <div class="d-inline form babilonia babilonia-exclamation-mark text-dark"></div>
+            </label>
+            <div class="input-group">
+                <input id="itemcuota" value="64000" readonly="" type="text" class="form-control babilonia-input w-60" placeholder="S/ 0" inputmode="decimal" data-type="convert" data-prefix="currency">
+                <input id="itempercent" type="text" value="10 %" class="form-control babilonia-input w-40 validate" placeholder="0 %" inputmode="decimal">
+            </div>
+        </div>
+        <div class="">
+            <label class="form-label fw-semibold">
+                <span class="d-none d-md-inline d-lg-inline d-xl-inline d-xxl-inline">Tasa de interés referencial</span>
+                <span class="d-inline d-md-none d-lg-none d-xl-none d-xxl-none">Tasa de interés</span>
+                <div class="d-inline form babilonia babilonia-exclamation-mark text-dark"></div>
+            </label>
+            <input id="tasa" type="text" value="8 %" class="form-control babilonia-input validate" placeholder="0 %" inputmode="decimal">            
+        </div>
+        <div class="">
+            <label class="form-label fw-semibold">
+                Plazo de crédito 
+                <div class="d-inline form babilonia babilonia-exclamation-mark text-dark"></div>
+            </label>
+            <input id="plazo" type="text" value="20 años" class="form-control babilonia-input validate" placeholder="0 años" inputmode="decimal">
+        </div>
+                <div class="d-flex align-items-center gap-2">
+            <span class="note-text">*</span>
+            <span class="note-text">Valor referencial. Para conocer el monto exacto, por favor comunícate con tu entidad financiera.</span>
+        </div>
+        <button id="project-detail-btn-finance" type="button" class="btn btn-calcular flattened">
+            <span class="d-none d-md-inline d-lg-inline d-xl-inline d-xxl-inline">Calcular</span>
+            <span class="d-inline d-md-none d-lg-none d-xl-none d-xxl-none">Calcular cuotas</span>
+        </button>        
+    
+</form>
+<div id="result_financiamiento" class="justify-content-center align-items-center mt-5 py-3 d-flex gap-4 flex-column flex-sm-column flex-md-column flex-lg-row">
+
+    <div class="circle-wrap mx-auto">
+        <div class="circle">
+            <div class="mask full">
+                <div class="fill"></div>
+            </div>
+            <div class="mask half">
+                <div class="fill"></div>
+            </div>
+            <div class="inside-circle">
+                <div class="w-100">
+                    <h4 class="text-center m-0 cuota-mensual justify-content-center">$245</h4>
+                    <span class="text-center m-0">al mes</span>
+                </div>
+            </div>
+        </div>
+    </div>
+                
+    <div class="col-md me-auto">
+        <h5 class="mb-3">                
+            <span class="me-1">Valor financiado: <span class="text-sky-blue prestamo">$23,400</span></span>                
+        </h5>
+        <h5 class="mb-3">                
+            <span class="me-1">Pago mensual: <span class="text-sky-blue cuota-mensual">$245</span></span>
+        </h5>
+        <h5 class="mb-3">                
+            <span class="me-1">Plazo de financiamiento: <span class="text-sky-blue valor-plazo">15 años</span></span>
+        </h5>
+        <h5 class="mb-3">                
+            <span class="me-1">Tasa referencial: <span class="text-sky-blue interes-referencial">8.00%</span></span>                
+        </h5>        
+    </div>
+</div>    </div>
+
+
+   
+  
+
+
+  
+   
+
