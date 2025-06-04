@@ -1,65 +1,125 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Cuotas</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 400px;
-      margin: auto;
+      background-color: #f4f4f4;
       padding: 20px;
     }
-    input, select, button {
+    .calculadora-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .calculadora-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .calculadora-container label {
+      display: block;
+      margin-top: 10px;
+    }
+    .calculadora-container input {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
-    }
-    .resultado {
-      background-color: #f0f0f0;
-      padding: 15px;
+      margin-top: 5px;
       border-radius: 5px;
-      margin-top: 15px;
+      border: 1px solid #ccc;
+    }
+    #cuotaBox {
+      margin-top: 20px;
+      background-color: #d4edda;
+      border: 2px solid #155724;
+      color: #155724;
+      padding: 25px;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .calculadora-container button {
+      width: 100%;
+      padding: 15px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .calculadora-container button:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <h1>Calculadora de Cuotas</h1>
-  <label for="monto">Monto del préstamo ($):</label>
-  <input type="number" id="monto" placeholder="Ej: 10000">
 
-  <label for="interes">Tasa de interés anual (%):</label>
-  <input type="number" id="interes" placeholder="Ej: 20">
+  <div class="calculadora-container">
+    <h2>Calcula tu Cuota Mensual</h2>
+    <form id="formulario">
+      <label for="valorInmueble">Valor del Inmueble (USD):</label>
+      <input type="number" id="valorInmueble" required>
 
-  <label for="cuotas">Cantidad de cuotas (meses):</label>
-  <input type="number" id="cuotas" placeholder="Ej: 12">
+      <label for="tasaInteres">Tasa de Interés Anual (%):</label>
+      <input type="number" id="tasaInteres" required>
 
-  <button onclick="calcularCuota()">Calcular</button>
+      <label for="plazo">Plazo (años):</label>
+      <input type="number" id="plazo" required>
 
-  <div class="resultado" id="resultado" style="display:none;"></div>
+      <label for="nombre">Nombre y Apellido:</label>
+      <input type="text" id="nombre" required>
+
+      <label for="correo">Correo Electrónico:</label>
+      <input type="email" id="correo" required>
+
+      <label for="celular">Número de Celular:</label>
+      <input type="tel" id="celular" required>
+
+      <div id="cuotaBox">Tu cuota mensual aparecerá aquí</div>
+
+      <button type="submit">Calcular y Enviar</button>
+    </form>
+  </div>
 
   <script>
-    function calcularCuota() {
-      const monto = parseFloat(document.getElementById('monto').value);
-      const interesAnual = parseFloat(document.getElementById('interes').value);
-      const cuotas = parseInt(document.getElementById('cuotas').value);
+    document.getElementById('formulario').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-      if (isNaN(monto) || isNaN(interesAnual) || isNaN(cuotas) || monto <= 0 || cuotas <= 0) {
-        alert("Por favor completa todos los campos correctamente.");
-        return;
-      }
+      // Obtener valores del formulario
+      const valorInmueble = parseFloat(document.getElementById('valorInmueble').value);
+      const tasaInteres = parseFloat(document.getElementById('tasaInteres').value) / 100 / 12;
+      const plazo = parseInt(document.getElementById('plazo').value) * 12;
+      const nombre = document.getElementById('nombre').value;
+      const correo = document.getElementById('correo').value;
+      const celular = document.getElementById('celular').value;
 
-      const interesMensual = interesAnual / 12 / 100;
-      const cuota = monto * interesMensual / (1 - Math.pow(1 + interesMensual, -cuotas));
-      const totalPagado = cuota * cuotas;
+      // Calcular cuota mensual usando la fórmula de amortización
+      const cuotaMensual = (valorInmueble * tasaInteres) / (1 - Math.pow(1 + tasaInteres, -plazo));
+      const cuotaMensualRedondeada = cuotaMensual.toFixed(2);
 
-      document.getElementById('resultado').innerHTML = `
-        <strong>Cuota mensual:</strong> $${cuota.toFixed(2)}<br>
-        <strong>Total pagado:</strong> $${totalPagado.toFixed(2)}
-      `;
-      document.getElementById('resultado').style.display = 'block';
-    }
+      // Mostrar la cuota en el cuadro
+      document.getElementById('cuotaBox').textContent = `Tu cuota mensual estimada es: $${cuotaMensualRedondeada}`;
+
+      // Preparar el mensaje para WhatsApp
+      const mensaje = `Hola, soy ${nombre}. Estoy interesado en una propiedad de $${valorInmueble}. Mis datos son:\nCorreo: ${correo}\nCelular: ${celular}\nCuota mensual estimada: $${cuotaMensualRedondeada}`;
+
+      // Reemplazar TU_NUMERO_DE_WHATSAPP con tu número real
+      const numeroWhatsApp = 'TU_NUMERO_DE_WHATSAPP';
+      const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+      // Abrir WhatsApp en una nueva pestaña
+      window.open(urlWhatsApp, '_blank');
+    });
   </script>
+
 </body>
 </html>
+
