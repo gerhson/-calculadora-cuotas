@@ -1,98 +1,51 @@
-<!DOCTYPE html>
+
+  <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Mi calculadora</title>
+  <title>Calculadora Hipotecaria</title>
 </head>
 <body>
-  <h1>¡Hola mundo!</h1>
-  <p>Mi sitio desde GitHub Pages funciona.</p>
+  <h1>Calculadora de Cuotas</h1>
 
-  <!-- Botón de WhatsApp -->
-  <a href="https://wa.me/51993681392" target="_blank">
-    <button>Escribime por WhatsApp</button>
-  </a>
+  <label>Valor del inmueble (USD):</label>
+  <input type="number" id="valor" value="640000"><br><br>
+
+  <label>% Cuota inicial:</label>
+  <input type="number" id="cuota" value="10"><br><br>
+
+  <label>Tasa de interés anual (%):</label>
+  <input type="number" id="tasa" value="8"><br><br>
+
+  <label>Plazo (años):</label>
+  <input type="number" id="plazo" value="20"><br><br>
+
+  <button onclick="calcularCuota()">Calcular</button>
+
+  <h3>Resultado:</h3>
+  <p id="resultado"></p>
+
+  <script>
+    function calcularCuota() {
+      const valor = parseFloat(document.getElementById('valor').value);
+      const cuotaPorcentaje = parseFloat(document.getElementById('cuota').value);
+      const tasa = parseFloat(document.getElementById('tasa').value) / 100 / 12;
+      const plazo = parseInt(document.getElementById('plazo').value) * 12;
+
+      const cuotaInicial = valor * (cuotaPorcentaje / 100);
+      const montoPrestamo = valor - cuotaInicial;
+
+      const cuotaMensual = (montoPrestamo * tasa) / (1 - Math.pow(1 + tasa, -plazo));
+
+      document.getElementById('resultado').innerHTML =
+        `Monto financiado: $${montoPrestamo.toFixed(2)}<br>` +
+        `Cuota mensual estimada: $${cuotaMensual.toFixed(2)}`;
+    }
+  </script>
 </body>
 </html>
-
-
-<div id="calculadora-cuotas">
-        <form class="form-promociones shadow-sm rounded-3 border p-4 justify-content-end align-items-center gy-3 position-relative  listing-calculadora-style ">
    
-        <div class="">
-            <label class="form-label fw-semibold">Valor del inmueble</label>
-            <input id="itemvalue" value="640000" type="text" class="form-control babilonia-input validate" placeholder="S/ 0.00" inputmode="decimal" data-type="convert" data-price-pen="2328320" data-price-usd="640000" data-calculator="true" data-prefix="currency">
-        </div>
-        <div class="">
-            <label class="form-label fw-semibold">
-                Cuota inicial 
-                <div class="d-inline form babilonia babilonia-exclamation-mark text-dark"></div>
-            </label>
-            <div class="input-group">
-                <input id="itemcuota" value="64000" readonly="" type="text" class="form-control babilonia-input w-60" placeholder="S/ 0" inputmode="decimal" data-type="convert" data-prefix="currency">
-                <input id="itempercent" type="text" value="10 %" class="form-control babilonia-input w-40 validate" placeholder="0 %" inputmode="decimal">
-            </div>
-        </div>
-        <div class="">
-            <label class="form-label fw-semibold">
-                <span class="d-none d-md-inline d-lg-inline d-xl-inline d-xxl-inline">Tasa de interés referencial</span>
-                <span class="d-inline d-md-none d-lg-none d-xl-none d-xxl-none">Tasa de interés</span>
-                <div class="d-inline form babilonia babilonia-exclamation-mark text-dark"></div>
-            </label>
-            <input id="tasa" type="text" value="8 %" class="form-control babilonia-input validate" placeholder="0 %" inputmode="decimal">            
-        </div>
-        <div class="">
-            <label class="form-label fw-semibold">
-                Plazo de crédito 
-                <div class="d-inline form babilonia babilonia-exclamation-mark text-dark"></div>
-            </label>
-            <input id="plazo" type="text" value="20 años" class="form-control babilonia-input validate" placeholder="0 años" inputmode="decimal">
-        </div>
-                <div class="d-flex align-items-center gap-2">
-            <span class="note-text">*</span>
-            <span class="note-text">Valor referencial. Para conocer el monto exacto, por favor comunícate con tu entidad financiera.</span>
-        </div>
-        <button id="project-detail-btn-finance" type="button" class="btn btn-calcular flattened">
-            <span class="d-none d-md-inline d-lg-inline d-xl-inline d-xxl-inline">Calcular</span>
-            <span class="d-inline d-md-none d-lg-none d-xl-none d-xxl-none">Calcular cuotas</span>
-        </button>        
     
-</form>
-<div id="result_financiamiento" class="justify-content-center align-items-center mt-5 py-3 d-flex gap-4 flex-column flex-sm-column flex-md-column flex-lg-row">
-
-    <div class="circle-wrap mx-auto">
-        <div class="circle">
-            <div class="mask full">
-                <div class="fill"></div>
-            </div>
-            <div class="mask half">
-                <div class="fill"></div>
-            </div>
-            <div class="inside-circle">
-                <div class="w-100">
-                    <h4 class="text-center m-0 cuota-mensual justify-content-center">$245</h4>
-                    <span class="text-center m-0">al mes</span>
-                </div>
-            </div>
-        </div>
-    </div>
-                
-    <div class="col-md me-auto">
-        <h5 class="mb-3">                
-            <span class="me-1">Valor financiado: <span class="text-sky-blue prestamo">$23,400</span></span>                
-        </h5>
-        <h5 class="mb-3">                
-            <span class="me-1">Pago mensual: <span class="text-sky-blue cuota-mensual">$245</span></span>
-        </h5>
-        <h5 class="mb-3">                
-            <span class="me-1">Plazo de financiamiento: <span class="text-sky-blue valor-plazo">15 años</span></span>
-        </h5>
-        <h5 class="mb-3">                
-            <span class="me-1">Tasa referencial: <span class="text-sky-blue interes-referencial">8.00%</span></span>                
-        </h5>        
-    </div>
-</div>    </div>
-
 
    
   
