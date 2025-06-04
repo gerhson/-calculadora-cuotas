@@ -1,50 +1,85 @@
 
-  <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <title>Calculadora Hipotecaria</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 15px; padding: 10px 15px; background-color: #25D366; color: white; border: none; cursor: pointer; }
+    .result { margin-top: 20px; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <h1>Calculadora de Cuotas</h1>
+  <div class="container">
+    <h2>Calculadora Hipotecaria</h2>
+    <form id="calcForm">
+      <label for="valor">Valor del inmueble (USD):</label>
+      <input type="number" id="valor" required>
 
-  <label>Valor del inmueble (USD):</label>
-  <input type="number" id="valor" value="640000"><br><br>
+      <label for="cuotaInicial">Cuota inicial (%):</label>
+      <input type="number" id="cuotaInicial" value="10" required>
 
-  <label>% Cuota inicial:</label>
-  <input type="number" id="cuota" value="10"><br><br>
+      <label for="tasa">Tasa de interés anual (%):</label>
+      <input type="number" id="tasa" value="8" required>
 
-  <label>Tasa de interés anual (%):</label>
-  <input type="number" id="tasa" value="8"><br><br>
+      <label for="plazo">Plazo (años):</label>
+      <input type="number" id="plazo" value="20" required>
 
-  <label>Plazo (años):</label>
-  <input type="number" id="plazo" value="20"><br><br>
+      <button type="button" onclick="calcularCuota()">Calcular Cuota</button>
 
-  <button onclick="calcularCuota()">Calcular</button>
+      <div class="result" id="resultado"></div>
 
-  <h3>Resultado:</h3>
-  <p id="resultado"></p>
+      <h3>Contáctanos</h3>
+      <label for="nombre">Nombre y Apellido:</label>
+      <input type="text" id="nombre" required>
+
+      <label for="correo">Correo Electrónico:</label>
+      <input type="email" id="correo" required>
+
+      <label for="telefono">Número de Celular:</label>
+      <input type="tel" id="telefono" required>
+
+      <button type="button" onclick="enviarWhatsApp()">Enviar y consultar por WhatsApp</button>
+    </form>
+  </div>
 
   <script>
+    let cuotaMensual = 0;
+
     function calcularCuota() {
       const valor = parseFloat(document.getElementById('valor').value);
-      const cuotaPorcentaje = parseFloat(document.getElementById('cuota').value);
+      const cuotaInicial = parseFloat(document.getElementById('cuotaInicial').value);
       const tasa = parseFloat(document.getElementById('tasa').value) / 100 / 12;
-      const plazo = parseInt(document.getElementById('plazo').value) * 12;
+      const plazo = parseFloat(document.getElementById('plazo').value) * 12;
 
-      const cuotaInicial = valor * (cuotaPorcentaje / 100);
-      const montoPrestamo = valor - cuotaInicial;
+      const montoFinanciado = valor * (1 - cuotaInicial / 100);
+      cuotaMensual = montoFinanciado * tasa / (1 - Math.pow(1 + tasa, -plazo));
 
-      const cuotaMensual = (montoPrestamo * tasa) / (1 - Math.pow(1 + tasa, -plazo));
+      document.getElementById('resultado').innerText = `Cuota mensual estimada: $${cuotaMensual.toFixed(2)}`;
+    }
 
-      document.getElementById('resultado').innerHTML =
-        `Monto financiado: $${montoPrestamo.toFixed(2)}<br>` +
-        `Cuota mensual estimada: $${cuotaMensual.toFixed(2)}`;
+    function enviarWhatsApp() {
+      const nombre = document.getElementById('nombre').value;
+      const correo = document.getElementById('correo').value;
+      const telefono = document.getElementById('telefono').value;
+
+      const mensaje = `Hola, soy ${nombre}. Mi correo es ${correo} y mi número es ${telefono}. Estoy interesado en una propiedad con una cuota mensual estimada de $${cuotaMensual.toFixed(2)}.`;
+
+      const numeroWhatsApp = '51993681392'; // Reemplaza con tu número
+      const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+
+      window.open(url, '_blank');
     }
   </script>
 </body>
 </html>
-   
+ 
+
+
     
 
    
