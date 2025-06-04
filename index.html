@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora de Crédito Hipotecario</title>
+  <title>Calculadora Hipotecaria</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -26,13 +26,13 @@
       width: 100%;
       padding: 10px;
       font-size: 16px;
-      background-color: #007BFF;
+      background-color: #25D366;
       color: white;
       border: none;
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #1ebe5f;
     }
     table {
       width: 100%;
@@ -50,10 +50,6 @@
     }
     h2, h3 {
       text-align: center;
-    }
-    .whatsapp {
-      margin-top: 15px;
-      background-color: #25D366;
     }
   </style>
 </head>
@@ -82,24 +78,22 @@
 <label>Cuota inicial (USD):</label>
 <input type="number" id="cuotaInicial" placeholder="Ej: 20000">
 
-<button onclick="calcularCredito()">Calcular</button>
-
-<!-- Botón de WhatsApp con mensaje personalizado -->
-<button class="whatsapp" onclick="enviarWhatsApp()" style="color:white; border:none; font-size:16px; cursor:pointer;">
-  💬 Enviar por WhatsApp
-</button>
+<!-- Botón único para calcular y enviar a WhatsApp -->
+<button onclick="calcularYEnviar()">Calcular y Enviar por WhatsApp</button>
 
 <div id="resultado"></div>
 
 <script>
-function calcularCredito() {
+function calcularYEnviar() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const correo = document.getElementById('correo').value.trim();
+  const celular = document.getElementById('celular').value.trim();
   const valorCasa = parseFloat(document.getElementById('valorCasa').value);
   const tasaAnual = parseFloat(document.getElementById('tasaInteres').value);
   const tiempoMeses = parseInt(document.getElementById('tiempoMeses').value);
   const cuotaInicial = parseFloat(document.getElementById('cuotaInicial').value);
 
-  if (isNaN(valorCasa) || isNaN(tasaAnual) || isNaN(tiempoMeses) || isNaN(cuotaInicial) ||
-      valorCasa <= 0 || tasaAnual <= 0 || tiempoMeses <= 0 || cuotaInicial < 0 || cuotaInicial >= valorCasa) {
+  if (!nombre || !correo || !celular || isNaN(valorCasa) || isNaN(tasaAnual) || isNaN(tiempoMeses) || isNaN(cuotaInicial)) {
     alert("Por favor, completa todos los campos correctamente.");
     return;
   }
@@ -146,30 +140,17 @@ function calcularCredito() {
 
   html += `</tbody></table>`;
   document.getElementById("resultado").innerHTML = html;
-}
 
-function enviarWhatsApp() {
-  const nombre = document.getElementById('nombre').value.trim();
-  const correo = document.getElementById('correo').value.trim();
-  const celular = document.getElementById('celular').value.trim();
-  const valorCasa = document.getElementById('valorCasa').value.trim();
-  const tasa = document.getElementById('tasaInteres').value.trim();
-  const tiempo = document.getElementById('tiempoMeses').value.trim();
-  const inicial = document.getElementById('cuotaInicial').value.trim();
-
-  if (!nombre || !correo || !celular || !valorCasa || !tasa || !tiempo || !inicial) {
-    alert("Por favor, completa todos los campos antes de enviar.");
-    return;
-  }
-
+  // Enviar por WhatsApp después de calcular
   const mensaje = `Hola, quiero información sobre un crédito hipotecario:
 👤 Nombre: ${nombre}
 📧 Correo: ${correo}
 📱 Celular: ${celular}
 🏠 Valor casa: $${valorCasa}
-💵 Cuota inicial: $${inicial}
-📅 Tiempo: ${tiempo} meses
-📈 Tasa de interés: ${tasa}%`;
+💵 Cuota inicial: $${cuotaInicial}
+📅 Tiempo: ${tiempoMeses} meses
+📈 Tasa de interés: ${tasaAnual}%
+📊 Cuota mensual estimada: $${cuotaMensual.toFixed(2)}`;
 
   const url = `https://wa.me/51993681392?text=${encodeURIComponent(mensaje)}`;
   window.open(url, "_blank");
