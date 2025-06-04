@@ -1,60 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Cuotas</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-    }
-    input, button {
-      padding: 10px;
-      width: 100%;
-      margin-bottom: 10px;
-    }
-    .resultado {
-      margin-top: 15px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Calculadora Crédito Hipotecario</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+  }
+  label, input {
+    display: block;
+    margin: 8px 0;
+  }
+  input, button {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  button {
+    margin-top: 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 6px;
+    text-align: right;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  h2 {
+    text-align: center;
+  }
+</style>
 </head>
 <body>
-  <h2>Calculadora de Cuotas con Interés</h2>
-  
-  <label>Monto total:</label>
-  <input type="number" id="monto" placeholder="Ej: 1000">
+  <h2>Calculadora Crédito Hipotecario</h2>
 
-  <label>Número de cuotas:</label>
-  <input type="number" id="cuotas" placeholder="Ej: 12">
+  <label>Monto de la casa (USD):</label>
+  <input type="number" id="montoCasa" placeholder="Ej: 100000" min="0" step="any" />
 
-  <label>Interés mensual (%):</label>
-  <input type="number" id="interes" placeholder="Ej: 2.5">
+  <label>Cuota inicial (USD):</label>
+  <input type="number" id="cuotaInicial" placeholder="Ej: 20000" min="0" step="any" />
 
-  <button onclick="calcularCuotas()">Calcular</button>
+  <label>Tiempo del crédito (años):</label>
+  <input type="number" id="tiempo" placeholder="Ej: 20" min="1" step="1" />
 
-  <div class="resultado" id="resultado"></div>
+  <label>TEA (Tasa Efectiva Anual %) :</label>
+  <input type="number" id="tea" placeholder="Ej: 6.5" min="0" step="any" />
+
+  <label>Tasa referencial anual (%) :</label>
+  <input type="number" id="tasaRef" placeholder="Ej: 2" min="0" step="any" />
+
+  <button onclick="calcularHipotecario()">Calcular</button>
+
+  <div id="resultado"></div>
 
   <script>
-    function calcularCuotas() {
-      const monto = parseFloat(document.getElementById('monto').value);
-      const cuotas = parseInt(document.getElementById('cuotas').value);
-      const interes = parseFloat(document.getElementById('interes').value) / 100;
+    function calcularHipotecario() {
+      const montoCasa = parseFloat(document.getElementById('montoCasa').value);
+      const cuotaInicial = parseFloat(document.getElementById('cuotaInicial').value);
+      const tiempoAnios = parseInt(document.getElementById('tiempo').value);
+      const tea = parseFloat(document.getElementById('tea').value) / 100;
+      const tasaRef = parseFloat(document.getElementById('tasaRef').value) / 100;
 
-      if (monto > 0 && cuotas > 0 && interes >= 0) {
-        const cuota = (monto * interes) / (1 - Math.pow(1 + interes, -cuotas));
-        const total = cuota * cuotas;
-        document.getElementById('resultado').innerHTML = `
-          Cuota mensual: $${cuota.toFixed(2)}<br>
-          Total a pagar: $${total.toFixed(2)}
-        `;
-      } else {
-        document.getElementById('resultado').innerText = 'Por favor, ingresa valores válidos.';
+      if (isNaN(montoCasa) || isNaN(cuotaInicial) || isNaN(tiempoAnios) || isNaN(tea) || isNaN(tasaRef) ||
+          montoCasa <= 0 || cuotaInicial < 0 || cuotaInicial >= montoCasa || tiempoAnios <= 0 || tea < 0 || tasaRef < 0) {
+        alert("Por favor ingresa todos los datos correctamente.");
+        return;
       }
+
+      // Monto financiado
+      const montoFinanciado = montoCasa - cuotaInicial;
+
+      // Convertir TEA a tasa mensual efectiva
+      const tasaMensual = Math.pow(1 + tea, 1/12) - 1;
+
+      // Número de cuotas en meses
+      const cuotas = tiempoAnios * 12;
+
+      // Calcular cuota mensual con fórmula amortización francesa
+      // cuota = P * i / (1 - (1 + i)^-n)
+      const cuotaMensual = montoFinanciado * tasaMensual / (1 - Math.pow(1 + tasaMensual, -cuotas));
+
+      // Total pagado
+      const totalPagado = cuotaMensual * cuotas;
+
+      // Intereses totales pagados
+      const interesesTotales = totalPagado - montoFinanciado;
+
+      // Mostrar resumen
+      let html = `
+        <h3>Resumen del crédito</h3>
+        <p><b>Monto financiado:</b> $${montoFinanciado.toFixed(2)}</p>
+        <p><b>Cuota mensual:</b> $${cuotaMensual.toFixed(2)}</p>
+        <p><b>Total pagado (capital + intereses):</b> $${totalPagado.toFixed(2)}</p>
+        <p><b>Intereses totales:</b> $${interesesTotales.toFixed(2)}</p>
+        <p><b>Tasa referencial anual:</b> ${(tasaRef*100).toFixed(2)}%</p>
+        <h3>Detalle de amortización mensual</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Mes</th>
+              <th>Cuota</th>
+              <th>Intereses</th>
+              <th>Capital amortizado</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      let saldo = montoFinanciado;
+      for(let mes=1; mes<=cuotas; mes++) {
+        const interesesMes = saldo * tasaMensual;
+        const capitalAmortizado = cuotaMensual - interesesMes;
+        saldo -= capitalAmortizado;
+
+        html += `<tr>
+          <td>${mes}</td>
+          <td>$${cuotaMensual.toFixed(2)}</td>
+          <td>$${interesesMes.toFixed(2)}</td>
+          <td>$${capitalAmortizado.toFixed(2)}</td>
+          <td>$${saldo > 0 ? saldo.toFixed(2) : "0.00"}</td>
+        </tr>`;
+      }
+
+      html += `
+          </tbody>
+        </table>
+      `;
+
+      document.getElementById('resultado').innerHTML = html;
     }
   </script>
 </body>
 </html>
 
+
+       
