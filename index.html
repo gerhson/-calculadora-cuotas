@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8" />
-<title>Calculadora Crédito Hipotecario</title>
+<title>Calculadora Hipotecaria</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -12,28 +13,30 @@
   }
   label, input {
     display: block;
-    margin: 8px 0;
+    margin: 10px 0 5px;
   }
-  input, button {
-    padding: 8px;
+  input {
     width: 100%;
+    padding: 8px;
     box-sizing: border-box;
   }
   button {
     margin-top: 15px;
+    padding: 10px;
     background-color: #007BFF;
     color: white;
     border: none;
-    cursor: pointer;
     font-size: 16px;
+    cursor: pointer;
+    width: 100%;
   }
   button:hover {
     background-color: #0056b3;
   }
   table {
     width: 100%;
+    margin-top: 25px;
     border-collapse: collapse;
-    margin-top: 20px;
     font-size: 14px;
   }
   th, td {
@@ -50,26 +53,23 @@
 </style>
 </head>
 <body>
-  <h2>Calculadora Crédito Hipotecario</h2>
 
-  <label>Monto de la casa (USD):</label>
-  <input type="number" id="montoCasa" placeholder="Ej: 100000" min="0" step="any" />
+<h2>Calculadora Hipotecaria</h2>
 
-  <label>Cuota inicial (USD):</label>
-  <input type="number" id="cuotaInicial" placeholder="Ej: 20000" min="0" step="any" />
+<label for="valorCasa">Valor de la casa (USD):</label>
+<input type="number" id="valorCasa" min="0" step="any" placeholder="Ej: 150000" />
 
-  <label>Tiempo del crédito (años):</label>
-  <input type="number" id="tiempo" placeholder="Ej: 20" min="1" step="1" />
+<label for="interesReferencial">Interés referencial anual (%):</label>
+<input type="number" id="interesReferencial" min="0" step="any" placeholder="Ej: 5" />
 
-  <label>TEA (Tasa Efectiva Anual %) :</label>
-  <input type="number" id="tea" placeholder="Ej: 6.5" min="0" step="any" />
+<label for="tiempoMeses">Tiempo del crédito (meses):</label>
+<input type="number" id="tiempoMeses" min="1" step="1" placeholder="Ej: 240" />
 
-  <label>Tasa referencial anual (%) :</label>
-  <input type="number" id="tasaRef" placeholder="Ej: 2" min="0" step="any" />
+<label for="cuotaInicial">Cuota inicial (USD):</label>
+<input type="number" id="cuotaInicial" min="0" step="any" placeholder="Ej: 30000" />
 
-  <button onc
-
-  
+<button onclick="calcularCuota()
+ 
  
      
       
